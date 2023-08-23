@@ -18,6 +18,7 @@ def mark_unarchived(modeladmin: admin.ModelAdmin, request: HttpRequest, queryset
 
 class OrderInline(admin.TabularInline):
     model = Product.orders.through
+    extra = 0
 
 
 @admin.register(Product)
@@ -55,11 +56,15 @@ class ProductAdmin(admin.ModelAdmin, ExportAsCSVMixin):
         else:
             return obj.description[:48] + '...'
 
+
+    description_short.short_description = "My Custom Field"
+
 # admin.site.register(Product, ProductAdmin)
 
 
 class ProductInline(admin.StackedInline):
     model = Order.products.through
+    extra = 0
 
 
 @admin.register(Order)
