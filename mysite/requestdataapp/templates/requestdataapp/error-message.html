@@ -1,0 +1,12 @@
+{% extends 'requestdataapp/base.html' %}
+
+{% block title %}Error 418 I’m a teapot{% endblock %}
+
+{% block body %}
+    <h1>Less than 10 seconds have passed since for re-request from your IP!</h1>
+
+    <form action="/req/upload">
+    <button>Back</button>
+    </form>
+
+{% endblock %}
