@@ -8,7 +8,6 @@ class ProductForm(forms.ModelForm):
         model = Product
         fields = 'name', 'price', 'description', 'discount'
 
-
     # name = forms.CharField(label='Name', max_length=100)
     # price = forms.DecimalField(label='Price', min_value=1, max_value=100000000, decimal_places=2)
     # description = forms.CharField(
@@ -24,4 +23,4 @@ class ProductForm(forms.ModelForm):
 class OrderForm(forms.ModelForm):
     class Meta:
         model = Order
-        fields = 'delivery_address', 'promocode'
+        fields = 'user', 'delivery_address', 'promocode'

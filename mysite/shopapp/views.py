@@ -38,7 +38,8 @@ def products_list(request: HttpRequest) -> render:
 
 def orders_list(request: HttpRequest) -> render:
     context = {
-        "orders": Order.objects.select_related("user").prefetch_related('products').all(),
+        "orders": Order.objects.all(),
+        # "orders": Order.objects.select_related("user").prefetch_related('products').all(),
     }
     return render(request, 'shopapp/orders_list.html', context=context)
 
@@ -47,7 +48,8 @@ def create_product(request: HttpRequest) -> HttpResponse:
     if request.method == 'POST':
         form = ProductForm(request.POST)
         if form.is_valid():
-            Product.objects.create(**form.cleaned_data)
+            form.save()
+            # Product.objects.create(**form.cleaned_data)
             url = reverse('shopapp:products_list')
             return redirect(url)
     else:
@@ -62,8 +64,9 @@ def create_order(request: HttpRequest) -> HttpResponse:
     if request.method == 'POST':
         form = OrderForm(request.POST)
         if form.is_valid():
-            Product.objects.create(**form.cleaned_data)
-            url = reverse('shopapp:products_list')
+            form.save()
+            # Product.objects.create(**form.cleaned_data)
+            url = reverse('shopapp:orders_list')
             return redirect(url)
     else:
         form = OrderForm()
