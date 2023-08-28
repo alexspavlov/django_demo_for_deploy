@@ -1,9 +1,19 @@
-/*тело страницы*/
+/*Тело страницы*/
 
 html, body {
     margin: 0;
     padding: 0;
     background-color:#F4F3FC;
+    font-family: "Roboto Light", sans-serif;
+}
+
+a {
+    text-decoration: none;
+    color:#404040;
+}
+
+a:hover {
+    color: #747373;
 }
 
 /*Хэдер*/
@@ -20,10 +30,18 @@ header {
     margin-right: auto;
 }
 
+.fixed-container a {
+    margin-right: 20px;
+}
+
 header > div {
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+.number {
+    margin-right:10px;
 }
 
 /*Для всех секций*/
@@ -54,12 +72,14 @@ section {
 .price-info {
     background-color:#0080FF;
     color:white;
+    line-height: 40px;
 }
 
 .services {
     display: flex;
     justify-content: space-between;
     margin-bottom: 30px;
+    font-size: small;
 
 }
 
