@@ -1,0 +1,98 @@
+/*тело страницы*/
+
+html, body {
+    margin: 0;
+    padding: 0;
+    background-color:#F4F3FC;
+}
+
+/*Хэдер*/
+
+header {
+    height: 100px;
+    padding: 0 40px;
+}
+
+.fixed-container {
+    max-width: 1000px;
+    height: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+header > div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/*Для всех секций*/
+
+section {
+    padding: 40px;
+}
+
+/*1-я секция*/
+
+.section_1 > div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+    background-image: url('http://alexeypavlov.me/wp-content/uploads/2023/08/user_for_proj.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: right;
+}
+
+.section_1 {
+    height: 300px;
+}
+
+/*2-я секция*/
+
+.price-info {
+    background-color:#0080FF;
+    color:white;
+}
+
+.services {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
+
+}
+
+.services img {
+    width: 150px;
+    margin-bottom: 20px;
+}
+
+.services > div {
+    width: 200px;
+}
+
+/*Футер*/
+
+footer {
+    padding: 40px
+}
+
+/*Кнопки*/
+
+button {
+    padding: 10px 30px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.light-button {
+    border: 1px solid black;
+    background-color: transparent;
+}
+
+.dark-button {
+    background-color:#0080FF;
+    border: 1px solid #0080FF;
+    color: white;
+}
