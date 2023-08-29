@@ -2,9 +2,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
     <meta charset="UTF-8">
+
     <title>Сайт Ивана Иванова – {% block title %}{% endblock %}</title>
+
     <link rel="stylesheet" href="{% static 'main/css/main.css' %}">
+
+    <script src="https://kit.fontawesome.com/4052e14bd0.js" crossorigin="anonymous"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+
 </head>
 <body>
     <header>
@@ -57,6 +67,20 @@
     <section>
         <div class="fixed-container">
             <h2>Примеры работ</h2>
+            <div class="works">
+                    <div>
+                        <img src="{% static 'main/img/psycho.png' %}" alt="">
+                        Сайт психолога Веры Антоновой
+                    </div>
+                    <div>
+                        <img src="{% static 'main/img/wear.png' %}" alt="">
+                        Сайт магазина детской одежды
+                    </div>
+                    <div>
+                        <img src="{% static 'main/img/fish.png' %}" alt="">
+                        Сайт магазина рыболов
+                    </div>
+            </div>
         </div>
     </section>
 
@@ -65,14 +89,45 @@
             <h2>Адаптивная вёрстка под все
                 <br>устройства и браузеры
                 <br>от 1000 руб. всего за 4 часа*</h2>
+
+            <div class="price-remark">
+                *Срок и стоимость могут отличаться от заявленных и рассчитываются
+                индивидуально, в зависимости от сложности задач
+        </div>
         </div>
     </section>
 
     <footer>
         <div class="fixed-container">
-            <a href="#">Услуги</a>
-            <a href="#">Стоимость</a>
-            <a href="#">Портфолио</a>
+
+            <div class="footer-info">
+
+            <div>
+                <div><a href="#">Услуги</a></div>
+                <div><a href="#">Стоимость</a></div>
+                <div><a href="#">Портфолио</a></div>
+            </div>
+
+            <div>
+                <div>ivan@ivanov@gmail.com</div>
+                <span class="number">+7 909 999-55-44</span>
+            </div>
+
+            <div>
+                <div><button class="light-button">Заказать звонок</button></div>
+                <div>
+                    <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#"><i class="fa-brands fa-vk"></i></a>
+                    <a href="#"><i class="fa-brands fa-youtube"></i></a>
+                    <a href="#"><i class="fa-brands fa-telegram"></i></a>
+                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                </div>
+            </div>
+
+
+
+            </div>
+
         </div>
     </footer>
 
