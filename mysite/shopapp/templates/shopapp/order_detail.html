@@ -10,6 +10,7 @@
             <p>Order by {% firstof object.user.first_name order.user.username %}</p>
             <p>Promocode: <code>{{ object.promocode }}</code></p>
             <p>Delivery address: {{ object.delivery_address }}</p>
+            <p>Archived: {{ object.archived }}</p>
             <div>
                 Product in order:
                 <ul>

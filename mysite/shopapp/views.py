@@ -86,13 +86,6 @@ class ProductDeleteView(DeleteView):
 
 # Заказы
 
-class OrdersListView(ListView):
-    queryset = (Order
-                .objects.select_related("user")
-                .prefetch_related('products').all()
-                )
-    context_object_name = 'orders'
-
 
 class OrderDetailsView(DetailView):
     queryset = (Order
@@ -102,16 +95,27 @@ class OrderDetailsView(DetailView):
     context_object_name = 'order'
 
 
+class OrdersListView(ListView):
+    queryset = (Order
+                .objects.select_related("user")
+                .prefetch_related('products').all()
+                )
+    context_object_name = 'orders'
+
+
 class OrderCreateView(CreateView):
     model = Order
-    fields = 'delivery_address', 'promocode'
+    fields = 'user', 'delivery_address', 'promocode'
     success_url = reverse_lazy('shopapp:orders_list')
 
 
 class OrderUpdateView(UpdateView):
     model = Order
-    fields = 'delivery_address', 'promocode'
+    fields = 'user', 'delivery_address', 'promocode'
     template_name_suffix = "_update_form"
+
+    def get_success_url(self):
+        return reverse("shopapp:orders_list")
 
 
 class OrderDeleteView(DeleteView):
@@ -126,6 +130,6 @@ class OrderDeleteView(DeleteView):
 
     def get_success_url(self):
         return reverse(
-            "shopapp:orders_details",
+            "shopapp:order_details",
             kwargs={"pk": self.object.pk},
         )
