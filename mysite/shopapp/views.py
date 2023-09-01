@@ -1,13 +1,13 @@
 from timeit import default_timer
 from django.http import HttpResponse, HttpRequest, HttpResponseRedirect
-from django.shortcuts import render, redirect, get_object_or_404, reverse
+from django.shortcuts import render, redirect
 from django.contrib.auth.models import Group
 from django.urls import reverse, reverse_lazy
 from django.views import View
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
 from .models import Product, Order
-from .forms import ProductForm, OrderForm, GroupForm
+from .forms import GroupForm
 
 
 class ShopIndexView(View):
