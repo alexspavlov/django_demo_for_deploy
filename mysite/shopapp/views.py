@@ -69,11 +69,8 @@ class ProductCreateView(PermissionRequiredMixin, CreateView):
 
     def form_valid(self, form):
 
+        form.instance.created_by = self.request.user
         response = super().form_valid(form)
-
-        #user = User.objects.get_or_create() ???
-        #form.instance.created_by(user) ???
-
         return response
 
 
