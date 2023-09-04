@@ -1,11 +1,15 @@
 from timeit import default_timer
+
+from django.contrib.auth.decorators import permission_required
 from django.http import HttpResponse, HttpRequest, HttpResponseRedirect
 from django.shortcuts import render, redirect
-from django.contrib.auth.models import Group
+from django.contrib.auth.models import Group, User
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin
 from django.urls import reverse, reverse_lazy
 from django.views import View
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
+from myauth.models import Profile
 from .models import Product, Order
 from .forms import GroupForm
 
@@ -55,10 +59,22 @@ class ProductsListView(ListView):
     context_object_name = "products"
 
 
-class ProductCreateView(CreateView):
+class ProductCreateView(PermissionRequiredMixin, CreateView):
+
+    permission_required = ["shopapp.add_product"]
+
     model = Product
     fields = 'name', 'price', 'description', 'discount'
     success_url = reverse_lazy('shopapp:products_list')
+
+    def form_valid(self, form):
+
+        response = super().form_valid(form)
+
+        #user = User.objects.get_or_create() ???
+        #form.instance.created_by(user) ???
+
+        return response
 
 
 class ProductUpdateView(UpdateView):
@@ -87,7 +103,8 @@ class ProductDeleteView(DeleteView):
 # Заказы
 
 
-class OrderDetailsView(DetailView):
+class OrderDetailsView(PermissionRequiredMixin, DetailView):
+    permission_required = ["view_order"]
     queryset = (Order
                 .objects.select_related("user")
                 .prefetch_related('products').all()
@@ -95,10 +112,10 @@ class OrderDetailsView(DetailView):
     context_object_name = 'order'
 
 
-class OrdersListView(ListView):
-    queryset = (Order
-                .objects.select_related("user")
-                .prefetch_related('products').all()
+class OrdersListView(LoginRequiredMixin, ListView):
+    queryset = (Order.objects
+                .select_related("user")
+                .prefetch_related('products')
                 )
     context_object_name = 'orders'
 

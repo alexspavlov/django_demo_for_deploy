@@ -6,6 +6,8 @@ from .views import (
                     set_session_view,
                     get_session_view,
                     MyLogoutView,
+                    AboutMeView,
+                    RegisterView,
 )
 
 app_name = "myauth"
@@ -25,4 +27,7 @@ urlpatterns = [
     path('session/get/', get_session_view, name='session-get'),
 
     path('logout/', MyLogoutView.as_view(), name='logout'),
+
+    path('about-me/', AboutMeView.as_view(), name='about-me'),
+    path('register/', RegisterView.as_view(), name='register')
 ]

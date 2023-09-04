@@ -13,6 +13,8 @@ class Product(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     archived = models.BooleanField(default=False)
 
+    created_by = models.ForeignKey(User, on_delete=models.PROTECT)
+
     # @property
     # def description_short(self) -> str:
     #     if len(self.description) < 48:
