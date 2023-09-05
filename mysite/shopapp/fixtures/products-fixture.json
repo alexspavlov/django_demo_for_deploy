@@ -1,0 +1,14 @@
+[
+  {
+    "fields": {
+      "name": "Desktop",
+      "description": "Cool Desktop",
+      "price": "1234.00",
+      "discount": 10,
+      "created_at": "2023-09-05T19:47:36.220Z",
+      "archived": false,
+      "created_by": 1
+    },
+    "model": "shopapp.product",
+    "pk": 1
+  }, {"model": "shopapp.product", "pk": 2, "fields": {"name": "Tablet", "description": "Cool Tablet", "price": "456.00", "discount": 20, "created_at": "2023-09-05T19:49:14.379Z", "archived": false, "created_by": 1}}, {"model": "shopapp.product", "pk": 3, "fields": {"name": "Smartphone", "description": "", "price": "1234.00", "discount": 10, "created_at": "2023-09-05T19:49:53.846Z", "archived": false, "created_by": 2}}]

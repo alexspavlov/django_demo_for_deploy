@@ -59,7 +59,7 @@ class ProductsListView(ListView):
     context_object_name = "products"
 
 
-class ProductCreateView(PermissionRequiredMixin, CreateView):
+class ProductCreateView(CreateView):
 
     permission_required = ["shopapp.add_product"]
 
