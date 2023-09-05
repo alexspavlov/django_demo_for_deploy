@@ -74,10 +74,20 @@ class ProductCreateView(PermissionRequiredMixin, CreateView):
         return response
 
 
-class ProductUpdateView(UpdateView):
+class ProductUpdateView(UserPassesTestMixin, UpdateView):
     model = Product
     fields = 'name', 'price', 'description', 'discount'
     template_name_suffix = "_update_form"
+
+    def test_func(self):
+        if self.request.user.is_superuser:
+            return True
+
+        self.object = self.get_object()
+
+        has_edit_perm = self.request.user.has_perm("shopapp.change_product")
+        created_by_current_user = self.object.created_by == self.request.user
+        return has_edit_perm and created_by_current_user
 
 
 class ProductDeleteView(DeleteView):
