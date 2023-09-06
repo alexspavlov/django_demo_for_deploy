@@ -64,19 +64,19 @@ class ProductCreateView(CreateView):
     permission_required = ["shopapp.add_product"]
 
     model = Product
-    fields = 'name', 'price', 'description', 'discount'
+    fields = 'name', 'price', 'description', 'discount', 'preview'
     success_url = reverse_lazy('shopapp:products_list')
 
-    def form_valid(self, form):
-
-        form.instance.created_by = self.request.user
-        response = super().form_valid(form)
-        return response
+    # def form_valid(self, form):
+    #
+    #     form.instance.created_by = self.request.user
+    #     response = super().form_valid(form)
+    #     return response
 
 
 class ProductUpdateView(UserPassesTestMixin, UpdateView):
     model = Product
-    fields = 'name', 'price', 'description', 'discount'
+    fields = 'name', 'price', 'description', 'discount', 'preview'
     template_name_suffix = "_update_form"
 
     def test_func(self):
@@ -88,6 +88,12 @@ class ProductUpdateView(UserPassesTestMixin, UpdateView):
         has_edit_perm = self.request.user.has_perm("shopapp.change_product")
         created_by_current_user = self.object.created_by == self.request.user
         return has_edit_perm and created_by_current_user
+
+    def get_success_url(self):
+        return reverse(
+            "shopapp:product_details",
+            kwargs={"pk": self.object.pk},
+        )
 
 
 class ProductDeleteView(DeleteView):
