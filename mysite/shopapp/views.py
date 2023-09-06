@@ -111,7 +111,10 @@ class ProductDeleteView(DeleteView):
 
 
 class OrderDetailsView(PermissionRequiredMixin, DetailView):
-    permission_required = "view_order"
+
+    model = Order
+    permission_required = "shopapp.view_order"
+
     queryset = (Order
                 .objects.select_related("user")
                 .prefetch_related('products').all()
@@ -172,3 +175,19 @@ class ProductsDataExportView(View):
             for product in products
         ]
         return JsonResponse({"products": products_data})
+
+
+class OrdersDataExportView(View):
+    def get(self, request: HttpRequest) -> JsonResponse:
+        orders = Order.objects.order_by("pk").all()
+        orders_data = [
+            {
+                "pk": order.pk,
+                "delivery_address": order.delivery_address,
+                "promocode": order.promocode,
+                "created_by": order.user_id,
+                # "archived": order.archived,
+            }
+            for order in orders
+        ]
+        return JsonResponse({"orders": orders_data})

@@ -160,6 +160,61 @@ class OrderDetailViewTestCase(TestCase):
         response = self.client.get(
             reverse("shopapp:order_details",
                     kwargs={"pk": self.order.pk}),
-                    HTTP_USER_AGENT='Mozilla/5.0',
+            HTTP_USER_AGENT='Mozilla/5.0',
         )
         self.assertContains(response, self.order.delivery_address)
+
+
+class OrdersExportViewTestCase(TestCase):
+    fixtures = [
+        'users-fixture.json',
+        'products-fixture.json',
+        'orders-fixture.json',
+    ]
+
+    @classmethod
+    def setUpClass(cls):
+        cls.user = User.objects.create_user(
+            username='Jack',
+            password='qwerty',
+            is_staff=True,
+        )
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.user.delete()
+
+    def setUp(self) -> None:
+        self.client.force_login(self.user)
+
+    def test_get_orders_view(self):
+
+        response = self.client.get(
+            reverse("shopapp:orders-export"),
+            HTTP_USER_AGENT='Mozilla/5.0',
+        )
+
+        self.assertEqual(response.status_code, 200)
+
+        orders = Order.objects.order_by("pk").all()
+
+        expected_data = [
+            {
+                "pk": order.pk,
+                "delivery_address": order.delivery_address,
+                "promocode": order.promocode,
+                "created_by": order.user_id,
+                # "archived": order.archived,
+            }
+            for order in orders
+        ]
+
+        received_data = response.json
+        print("received data: ", received_data)
+        print("expected data: ", expected_data)
+
+        orders_data = response.json()
+        self.assertEqual(
+            orders_data["orders"],
+            expected_data,
+        )
