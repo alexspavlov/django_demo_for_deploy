@@ -1,7 +1,7 @@
 from timeit import default_timer
 
 from django.contrib.auth.decorators import permission_required
-from django.http import HttpResponse, HttpRequest, HttpResponseRedirect
+from django.http import HttpResponse, HttpRequest, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import Group, User
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin
@@ -111,7 +111,7 @@ class ProductDeleteView(DeleteView):
 
 
 class OrderDetailsView(PermissionRequiredMixin, DetailView):
-    permission_required = ["view_order"]
+    permission_required = "view_order"
     queryset = (Order
                 .objects.select_related("user")
                 .prefetch_related('products').all()
@@ -157,3 +157,18 @@ class OrderDeleteView(DeleteView):
             "shopapp:order_details",
             kwargs={"pk": self.object.pk},
         )
+
+
+class ProductsDataExportView(View):
+    def get(self, request: HttpRequest) -> JsonResponse:
+        products = Product.objects.order_by("pk").all()
+        products_data = [
+            {
+                "pk": product.pk,
+                "name": product.name,
+                "price": product.price,
+                "archived": product.archived,
+            }
+            for product in products
+        ]
+        return JsonResponse({"products": products_data})

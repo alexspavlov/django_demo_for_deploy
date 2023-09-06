@@ -3,11 +3,11 @@ from string import ascii_letters
 
 from django.conf import settings
 
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Permission
 from django.test import TestCase
 from django.urls import reverse
 
-from shopapp.models import Product
+from shopapp.models import Product, Order
 from shopapp.utils import add_two_numbers
 
 
@@ -17,27 +17,28 @@ class AddTwoNumbersTestCase(TestCase):
         self.assertEqual(result, 5)
 
 
-class ProductCreateViewTestCase(TestCase):
-    def setUp(self) -> None:
-        self.product_name = "".join(choices(ascii_letters, k=10))
-        Product.objects.filter(name=self.product_name).delete()
-
-    # def test_create_product(self):
-    #     response = self.client.post(
-    #         reverse("shopapp:product_create"),
-    #         {
-    #             "created_by": "john",
-    #             "name": self.product_name,
-    #             "price": "123.45",
-    #             "description": "A good table",
-    #             "discount": "10",
-    #         },
-    #         HTTP_USER_AGENT='Mozilla/5.0'
-    #     )
-    #     self.assertRedirects(response, reverse("shopapp:products_list"))
-    #     self.assertTrue(
-    #         Product.objects.filter(name=self.product_name).exists()
-    #     )
+# class ProductCreateViewTestCase(TestCase):
+#
+#     @classmethod
+#     def setUp(cls):
+#         cls.product = Product.objects.create(name="Best Product")
+#
+#     def test_create_product(self):
+#         response = self.client.post(
+#             reverse("shopapp:product_create"),
+#             {
+#                 "created_by": "john",
+#                 "name": self.product.name,
+#                 "price": "123.45",
+#                 "description": "A good table",
+#                 "discount": "10",
+#             },
+#             HTTP_USER_AGENT='Mozilla/5.0'
+#         )
+#         self.assertRedirects(response, reverse("shopapp:products_list"))
+#         self.assertTrue(
+#             Product.objects.filter(name=self.product.name).exists()
+#         )
 
 
 class ProductDetailsViewTestCase(TestCase):
@@ -100,3 +101,65 @@ class OrdersListViewTestCase(TestCase):
         response = self.client.get(reverse("shopapp:orders_list"), HTTP_USER_AGENT='Mozilla/5.0')
         self.assertEqual(response.status_code, 302)
         self.assertIn(str(settings.LOGIN_URL), response.url)
+
+
+class ProductsExportViewTestCase(TestCase):
+    fixtures = [
+        'users-fixture.json',
+        'products-fixture.json',
+        'orders-fixture.json',
+    ]
+
+    def test_get_products_view(self):
+        response = self.client.get(
+            reverse("shopapp:products-export"),
+            HTTP_USER_AGENT='Mozilla/5.0',
+        )
+        self.assertEqual(response.status_code, 200)
+        products = Product.objects.order_by("pk").all()
+        expected_data = [
+            {
+                "pk": product.pk,
+                "name": product.name,
+                "price": str(product.price),
+                "archived": product.archived,
+            }
+            for product in products
+        ]
+
+        products_data = response.json()
+        self.assertEqual(
+            products_data["products"],
+            expected_data,
+        )
+
+
+class OrderDetailViewTestCase(TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.user = User.objects.create_user(username='Jack', password='qwerty')
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.user.delete()
+
+    def setUp(self) -> None:
+        self.client.force_login(self.user)
+        permission = Permission.objects.get(codename="view_order")
+        self.user.user_permissions.add(permission)
+        self.order = Order.objects.create(
+            delivery_address='Test address',
+            promocode='Test promocode',
+            user=self.user,
+        )
+
+    def tearDown(self) -> None:
+        self.order.delete()
+
+    def test_order_details(self):
+        response = self.client.get(
+            reverse("shopapp:order_details",
+                    kwargs={"pk": self.order.pk}),
+                    HTTP_USER_AGENT='Mozilla/5.0',
+        )
+        self.assertContains(response, self.order.delivery_address)

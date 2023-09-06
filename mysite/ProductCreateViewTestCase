@@ -1,0 +1,28 @@
+Found 6 test(s).
+System check identified no issues (0 silenced).
+initial call
+before get response
+requests count:  0
+responses count:  1
+after get response
+initial call
+before get response
+requests count:  0
+responses count:  1
+after get response
+initial call
+before get response
+requests count:  0
+got  1 exceptions so far
+responses count:  1
+after get response
+initial call
+before get response
+requests count:  0
+responses count:  1
+after get response
+initial call
+before get response
+requests count:  0
+responses count:  1
+after get response
