@@ -168,12 +168,13 @@ class OrderDetailViewTestCase(TestCase):
 class OrdersExportViewTestCase(TestCase):
     fixtures = [
         'users-fixture.json',
-        'products-fixture.json',
         'orders-fixture.json',
+        'products-fixture.json',
     ]
 
     @classmethod
-    def setUpClass(cls):
+    def setUpClass(cls) -> None:
+        super().setUpClass()
         cls.user = User.objects.create_user(
             username='Jack',
             password='qwerty',
