@@ -3,16 +3,15 @@
 {% block title %} Users list {% endblock %}
 
 {% block body %}
-    <h1>Users </h1>
+    <h1>Users list</h1>
         {% if users %}
             <div>
             {% for user in users %}
                 <div>
                     {% if user.profile.avatar %}
-                        <img src="{{ user.profile.avatar.url }}" alt="avatar">
+                        <a href="{% url 'myauth:user-details' pk=user.pk %}"><img src="{{ user.profile.avatar.url }}" alt="avatar"></a>
                     {% endif %}
-
-                    <p>Name: {{ user.username }}</p>
+                    <p>Name: <a href="{% url 'myauth:user-details' pk=user.pk %}">{{ user.username }}</a></p>
                     <p>Bio: {{ user.profile.bio }}</p>
                 </div>
                 <br>

@@ -10,6 +10,7 @@ from .views import (
                     RegisterView,
                     ProfileUpdateView,
                     ProfilesListView,
+                    ProfileDetailsView,
                     # FooBarView,
 )
 
@@ -35,9 +36,10 @@ urlpatterns = [
     path('register/', RegisterView.as_view(), name='register'),
 
     path('about-me/', AboutMeView.as_view(), name='about-me'),
+    path('details/<int:pk>/', ProfileDetailsView.as_view(), name='user-details'),
     path('list/', ProfilesListView.as_view(), name='users-list'),
 
-    path('<int:pk>/update/', ProfileUpdateView.as_view(), name='update'),
+    path('update/<int:pk>/', ProfileUpdateView.as_view(), name='update'),
 
     # path('foo-bar/', FooBarView.as_view(), name="foo-bar"),
 ]

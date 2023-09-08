@@ -1,9 +1,9 @@
 {% extends 'myauth/base.html' %}
 
-{% block title %}About me{% endblock %}
+{% block title %}My profile{% endblock %}
 
 {% block body %}
-    <h1>User info </h1>
+    <h1>My profile</h1>
     {% if user.is_authenticated %}
 
         <h2>Details</h2>
@@ -20,7 +20,8 @@
         <p>Bio: <i>{{ user.profile.bio }}</i></p>
         <br>
         <p><a href="{% url 'myauth:update' request.user.id %}">Update profile</a></p>
-        <p><a href="{% url 'myauth:users-list' %}">Back to users list</a></p>
+        <br>
+        <p><a href="{% url 'myauth:users-list' %}">Users List</a></p>
         <br>
         <p><a href="{% url 'myauth:logout' %}">Logout</a></p>
 

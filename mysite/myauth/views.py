@@ -8,7 +8,11 @@ from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse, reverse_lazy
-from django.views.generic import TemplateView, CreateView, UpdateView, ListView
+from django.views.generic import (TemplateView,
+                                  CreateView,
+                                  UpdateView,
+                                  ListView,
+                                  DetailView)
 from django.views import View
 from .models import Profile
 
@@ -21,6 +25,12 @@ class ProfilesListView(ListView):
     template_name = 'myauth/users_list.html'
     model = User
     context_object_name = "users"
+
+
+class ProfileDetailsView(DetailView):
+    template_name = 'myauth/user-details.html'
+    model = User
+    context_object_name = "user"
 
 
 class ProfileUpdateView(UpdateView):
