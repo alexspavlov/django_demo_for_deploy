@@ -8,15 +8,14 @@
             <div>
             {% for user in users %}
                 <div>
-
                     {% if user.profile.avatar %}
                         <img src="{{ user.profile.avatar.url }}" alt="avatar">
                     {% endif %}
 
-                    <p>Name: </p>
+                    <p>Name: {{ user.username }}</p>
                     <p>Bio: {{ user.profile.bio }}</p>
-
                 </div>
+                <br>
             {% endfor %}
                 <br>
                 <p><a href="{% url 'myauth:about-me' %}">Back to my profile</a></p>
