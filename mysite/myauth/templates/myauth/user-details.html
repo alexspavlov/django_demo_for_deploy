@@ -12,8 +12,11 @@
 
     <p>Name: {{ user.username }}</p>
     <p>Bio: {{ user.profile.bio }}</p>
-
     <br>
+    {% if request.user.is_staff or perms.myauth.change_profile %}
+        <p><a href="{% url 'myauth:update' pk=user.pk %}">Update this profile</a></p>
+        <br>
+    {% endif %}
     <p><a href="{% url 'myauth:users-list' %}">Back to users list</a></p>
 
 {% endblock %}

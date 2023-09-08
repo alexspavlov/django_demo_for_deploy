@@ -2,6 +2,7 @@ from django.contrib.auth.decorators import (login_required,
                                             permission_required,
                                             user_passes_test)
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.mixins import UserPassesTestMixin, PermissionRequiredMixin
 from django.contrib.auth.models import User
 from django.contrib.auth.views import LogoutView
 from django.http import HttpRequest, HttpResponse, JsonResponse
@@ -33,20 +34,29 @@ class ProfileDetailsView(DetailView):
     context_object_name = "user"
 
 
-class ProfileUpdateView(UpdateView):
+class ProfileUpdateView(PermissionRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Profile
     fields = 'bio', 'avatar'
     template_name_suffix = "_update_form"
 
+    permission_required = "myauth.change_profile"
+
+    def test_func(self):
+        if self.request.user.is_staff or self.request.user.id == self.get_object().user.id:
+            return True
+
+        has_edit_perm = self.request.user.has_perm("myauth.change_profile")
+
+        return has_edit_perm
+
     def get_success_url(self):
         return reverse(
-            "myauth:about-me",
-            # kwargs={"pk": self.request.user.id},
-            # object.pk
+            "myauth:user-details",
+            kwargs={"pk": self.object.id},
         )
 
-    def get_object(self, queryset=None):
-        return self.request.user.profile
+    # def get_object(self, queryset=None):
+    #     return self.request.user.profile
 
 
 class RegisterView(CreateView):
