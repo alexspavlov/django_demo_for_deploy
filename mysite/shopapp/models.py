@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
+from django.conf import settings
 
 
 def product_preview_directly_path(instance: "Product", filename: str) -> str:
@@ -20,7 +21,7 @@ class Product(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     archived = models.BooleanField(default=False)
 
-    created_by = models.ForeignKey(User, on_delete=models.PROTECT, default=1, blank=True, null=True)
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE)
 
     preview = models.ImageField(null=True, blank=True, upload_to=product_preview_directly_path)
 

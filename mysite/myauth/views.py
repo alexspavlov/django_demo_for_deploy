@@ -56,28 +56,28 @@ def login_view(request: HttpRequest) -> HttpResponse:
     return render(request, 'myauth/login.html', {"error": "Invalid Login Credentials"})
 
 
-@user_passes_test(lambda u: u.is_super)
-def set_cookie_view(request: HttpRequest) -> HttpResponse:
-    response = HttpResponse("Cookie set")
-    response.set_cookie('fizz', 'buzz', max_age=3600)
-    return response
-
-
-def get_cookie_view(request: HttpRequest) -> HttpResponse:
-    value = request.COOKIES.get('fizz', 'default_value')
-    return HttpResponse(f"Cookie value: {value!r}")
-
-
-@permission_required("myauth.view_profile", raise_exception=True)
-def set_session_view(request: HttpRequest) -> HttpResponse:
-    request.session["foobar"] = "spameggs"
-    return HttpResponse('Session Set!')
-
-
-@login_required
-def get_session_view(request: HttpRequest) -> HttpResponse:
-    value = request.session.get("foobar", "default")
-    return HttpResponse(f"Session value: {value!r}")
+# @user_passes_test(lambda u: u.is_super)
+# def set_cookie_view(request: HttpRequest) -> HttpResponse:
+#     response = HttpResponse("Cookie set")
+#     response.set_cookie('fizz', 'buzz', max_age=3600)
+#     return response
+#
+#
+# def get_cookie_view(request: HttpRequest) -> HttpResponse:
+#     value = request.COOKIES.get('fizz', 'default_value')
+#     return HttpResponse(f"Cookie value: {value!r}")
+#
+#
+# @permission_required("myauth.view_profile", raise_exception=True)
+# def set_session_view(request: HttpRequest) -> HttpResponse:
+#     request.session["foobar"] = "spameggs"
+#     return HttpResponse('Session Set!')
+#
+#
+# @login_required
+# def get_session_view(request: HttpRequest) -> HttpResponse:
+#     value = request.session.get("foobar", "default")
+#     return HttpResponse(f"Session value: {value!r}")
 
 
 def logout_view(request: HttpRequest) -> HttpResponse:
@@ -89,7 +89,7 @@ class MyLogoutView(LogoutView):
     next_page = reverse_lazy("myauth:login")
 
 
-class FooBarView(View):
-    def get(self, request: HttpRequest) -> JsonResponse:
-        return JsonResponse({"foo": "bar", "spam": "eggs"})
+# class FooBarView(View):
+#     def get(self, request: HttpRequest) -> JsonResponse:
+#         return JsonResponse({"foo": "bar", "spam": "eggs"})
 
