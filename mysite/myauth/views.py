@@ -2,18 +2,41 @@ from django.contrib.auth.decorators import (login_required,
                                             permission_required,
                                             user_passes_test)
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 from django.contrib.auth.views import LogoutView
 from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse, reverse_lazy
-from django.views.generic import TemplateView, CreateView
+from django.views.generic import TemplateView, CreateView, UpdateView, ListView
 from django.views import View
 from .models import Profile
 
 
 class AboutMeView(TemplateView):
     template_name = "myauth/about-me.html"
+
+
+class ProfilesListView(ListView):
+    template_name = 'myauth/users_list.html'
+    model = User
+    context_object_name = "users"
+
+
+class ProfileUpdateView(UpdateView):
+    model = Profile
+    fields = 'bio', 'avatar'
+    template_name_suffix = "_update_form"
+
+    def get_success_url(self):
+        return reverse(
+            "myauth:about-me",
+            # kwargs={"pk": self.request.user.id},
+            # object.pk
+        )
+
+    def get_object(self, queryset=None):
+        return self.request.user.profile
 
 
 class RegisterView(CreateView):
@@ -88,8 +111,6 @@ def logout_view(request: HttpRequest) -> HttpResponse:
 class MyLogoutView(LogoutView):
     next_page = reverse_lazy("myauth:login")
 
-
 # class FooBarView(View):
 #     def get(self, request: HttpRequest) -> JsonResponse:
 #         return JsonResponse({"foo": "bar", "spam": "eggs"})
-

@@ -8,6 +8,8 @@ from .views import (
                     MyLogoutView,
                     AboutMeView,
                     RegisterView,
+                    ProfileUpdateView,
+                    ProfilesListView,
                     # FooBarView,
 )
 
@@ -21,6 +23,7 @@ urlpatterns = [
             redirect_authenticated_user=True,
         ),
         name='login'),
+
     # path("cookie/get/", get_cookie_view, name='cookie-get'),
     # path('cookie/set/', set_cookie_view, name='cookie-set'),
     #
@@ -29,8 +32,12 @@ urlpatterns = [
 
     path('logout/', MyLogoutView.as_view(), name='logout'),
 
-    path('about-me/', AboutMeView.as_view(), name='about-me'),
     path('register/', RegisterView.as_view(), name='register'),
+
+    path('about-me/', AboutMeView.as_view(), name='about-me'),
+    path('list/', ProfilesListView.as_view(), name='users-list'),
+
+    path('<int:pk>/update/', ProfileUpdateView.as_view(), name='update'),
 
     # path('foo-bar/', FooBarView.as_view(), name="foo-bar"),
 ]
