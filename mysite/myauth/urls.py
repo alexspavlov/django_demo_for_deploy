@@ -36,10 +36,10 @@ urlpatterns = [
     path('register/', RegisterView.as_view(), name='register'),
 
     path('about-me/', AboutMeView.as_view(), name='about-me'),
-    path('details/<int:pk>/', ProfileDetailsView.as_view(), name='user-details'),
-    path('list/', ProfilesListView.as_view(), name='users-list'),
-
     path('update/<int:pk>/', ProfileUpdateView.as_view(), name='update'),
+
+    path('list/', ProfilesListView.as_view(), name='users-list'),
+    path('details/<int:pk>/', ProfileDetailsView.as_view(), name='user-details'),
 
     # path('foo-bar/', FooBarView.as_view(), name="foo-bar"),
 ]
