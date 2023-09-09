@@ -52,7 +52,7 @@ class ProfileUpdateView(PermissionRequiredMixin, UserPassesTestMixin, UpdateView
     def get_success_url(self):
         return reverse(
             "myauth:user-details",
-            kwargs={"pk": self.object.id},
+            kwargs={"pk": self.get_object().user.id},
         )
 
     # def get_object(self, queryset=None):
