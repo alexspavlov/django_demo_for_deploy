@@ -13,6 +13,8 @@ from myauth.models import Profile
 from .models import Product, Order
 from .forms import GroupForm
 
+from django.utils.translation import gettext_lazy as _
+
 
 class ShopIndexView(View):
     def get(self, request: HttpRequest) -> HttpResponse:
@@ -24,6 +26,7 @@ class ShopIndexView(View):
         context = {
             "time_running": default_timer(),
             "products": products,
+            "items": 2,
         }
         return render(request, 'shopapp/shop-index.html', context=context)
 

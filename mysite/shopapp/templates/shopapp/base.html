@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+{% load i18n %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -20,7 +21,7 @@ Base Body
 
 <div>
     {% now 'l' as current_weekday %}
-    Today is: {{ current_weekday }}
+    {% translate 'Today is' %}: {{ current_weekday }}
 </div>
 
 </body>

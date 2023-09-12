@@ -25,12 +25,12 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 
     path('', include('main.urls')),
-    path('shop/', include('shopapp.urls')),
     path('req/', include('requestdataapp.urls')),
 ]
 
 urlpatterns += i18n_patterns(
     path('accounts/', include('myauth.urls')),
+    path('shop/', include('shopapp.urls')),
 )
 
 if settings.DEBUG:

@@ -2,6 +2,8 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.conf import settings
 
+from django.utils.translation import gettext_lazy as _
+
 
 def product_preview_directly_path(instance: "Product", filename: str) -> str:
     return "products/product_{pk}/preview/{filename}".format(
@@ -13,7 +15,8 @@ def product_preview_directly_path(instance: "Product", filename: str) -> str:
 class Product(models.Model):
     class Meta:
         ordering = ['name']
-        # verbose_name = _("Product")
+        verbose_name = _("Product")
+        verbose_name_plural = _("Products")
 
     name = models.CharField(max_length=100)
     description = models.TextField(null=False, blank=True)
@@ -40,6 +43,11 @@ class Product(models.Model):
 
 
 class Order(models.Model):
+
+    class Meta:
+        verbose_name = _("Order")
+        verbose_name_plural = _("Orders")
+
     delivery_address = models.TextField(null=True, blank=True)
     promocode = models.CharField(max_length=20, null=False, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -47,3 +55,6 @@ class Order(models.Model):
     products = models.ManyToManyField(Product, related_name="orders")
 
     receipt = models.FileField(null=True, upload_to='orders/receipts/')
+
+    def __str__(self) -> str:
+        return f"Order(pk={self.pk})"
