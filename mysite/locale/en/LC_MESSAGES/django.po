@@ -1,0 +1,148 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-09-12 18:32+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: myauth/views.py:23
+msgid "welcome hello world"
+msgstr "Hello World!"
+
+#: myauth/views.py:29
+#, python-brace-format
+msgid "one product"
+msgid_plural "{count} products"
+msgstr[0] "One product"
+msgstr[1] "{count} products!"
+
+#: mysite/settings.py:134
+msgid "English"
+msgstr "English"
+
+#: mysite/settings.py:135
+msgid "Russian"
+msgstr "Russian"
+
+#: shopapp/models.py:18 shopapp/templates/shopapp/products-details.html:5
+#: shopapp/templates/shopapp/products-details.html:9
+#, fuzzy
+#| msgid "one product"
+#| msgid_plural "{count} products"
+msgid "Product"
+msgstr "One product"
+
+#: shopapp/models.py:19 shopapp/templates/shopapp/products_list.html:8
+#, fuzzy
+#| msgid "one product"
+#| msgid_plural "{count} products"
+msgid "Products"
+msgstr "One product"
+
+#: shopapp/models.py:48
+msgid "Order"
+msgstr "Order"
+
+#: shopapp/models.py:49
+msgid "Orders"
+msgstr "Orders"
+
+#: shopapp/templates/shopapp/base.html:24
+msgid "Today is"
+msgstr "Today is"
+
+#: shopapp/templates/shopapp/products-details.html:11
+msgid "Created by"
+msgstr "Created by"
+
+#: shopapp/templates/shopapp/products-details.html:12
+msgid "Descriptioh"
+msgstr "Description"
+
+#: shopapp/templates/shopapp/products-details.html:13
+#: shopapp/templates/shopapp/products_list.html:22
+msgid "Price"
+msgstr "Price"
+
+#: shopapp/templates/shopapp/products-details.html:14
+#: shopapp/templates/shopapp/products_list.html:24
+msgid "Discount"
+msgstr "Discount"
+
+#: shopapp/templates/shopapp/products-details.html:15
+#, fuzzy
+#| msgid "Archive product"
+msgid "Archived"
+msgstr "Archive product"
+
+#: shopapp/templates/shopapp/products-details.html:22
+#, python-format
+msgid ""
+"\n"
+"                There is only one preview\n"
+"            "
+msgid_plural ""
+"\n"
+"                There are %(previews_count)s previews\n"
+"            "
+msgstr[0] ""
+msgstr[1] ""
+
+#: shopapp/templates/shopapp/products-details.html:32
+msgid "Update product"
+msgstr "Update product"
+
+#: shopapp/templates/shopapp/products-details.html:37
+msgid "Archive product"
+msgstr "Archive product"
+
+#: shopapp/templates/shopapp/products-details.html:41
+msgid "Back to products list"
+msgstr "Back to products List"
+
+#: shopapp/templates/shopapp/products_list.html:5
+msgid "Products list"
+msgstr "Products List"
+
+#: shopapp/templates/shopapp/products_list.html:11
+#, python-format
+msgid ""
+"\n"
+"                There is only one product.\n"
+"            "
+msgid_plural ""
+"\n"
+"                There are %(products_count)s products.\n"
+"            "
+msgstr[0] ""
+msgstr[1] ""
+
+#: shopapp/templates/shopapp/products_list.html:21
+msgctxt "product name"
+msgid "Name"
+msgstr "Name"
+
+#: shopapp/templates/shopapp/products_list.html:23
+msgid "no discount"
+msgstr "no discount"
+
+#: shopapp/templates/shopapp/products_list.html:35
+msgid "No products yet"
+msgstr "No products yet"
+
+#: shopapp/templates/shopapp/products_list.html:40
+msgid "Create a new product"
+msgstr "Create a new product"
