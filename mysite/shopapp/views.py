@@ -8,6 +8,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMix
 from django.urls import reverse, reverse_lazy
 from django.views import View
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django_filters.rest_framework import DjangoFilterBackend
 
 from myauth.models import Profile
 from .models import Product, Order
@@ -15,6 +16,9 @@ from .forms import GroupForm
 
 from django.utils.translation import gettext_lazy as _
 
+from rest_framework.viewsets import ModelViewSet
+from rest_framework.filters import SearchFilter, OrderingFilter
+from .serializers import ProductSerializer, OrderSerializer
 
 class ShopIndexView(View):
     def get(self, request: HttpRequest) -> HttpResponse:
@@ -116,6 +120,34 @@ class ProductDeleteView(DeleteView):
         )
 
 
+class ProductViewSet(ModelViewSet):
+    queryset = Product.objects.all()
+
+    serializer_class = ProductSerializer
+
+    filter_backends = [
+        SearchFilter,
+        DjangoFilterBackend,
+        OrderingFilter,
+    ]
+
+    search_fields = ["name", "description"]
+
+    filterset_fields = [
+        "name",
+        "description",
+        "price",
+        "discount",
+        "archived",
+    ]
+
+    ordering_fields = [
+        "name",
+        "price",
+        "discount",
+    ]
+
+
 # Заказы
 
 
@@ -200,3 +232,30 @@ class OrdersDataExportView(View):
             for order in orders
         ]
         return JsonResponse({"orders": orders_data})
+
+
+class OrderViewSet(ModelViewSet):
+    queryset = Order.objects.all()
+
+    serializer_class = OrderSerializer
+
+    filter_backends = [
+        SearchFilter,
+        DjangoFilterBackend,
+        OrderingFilter,
+    ]
+
+    search_fields = ["pk", "delivery_address"]
+
+    filterset_fields = [
+        'delivery_address',
+        'promocode',
+        'user',
+    ]
+
+    ordering_fields = [
+        'pk',
+        'delivery_address',
+        'promocode',
+        'user',
+    ]
