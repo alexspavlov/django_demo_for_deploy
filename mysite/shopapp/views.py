@@ -1,3 +1,9 @@
+"""
+В этом модуле лежат различные наборы представлений.
+
+Разные view Интернет-магазина: по товарам, заказам и т.д.
+"""
+
 from timeit import default_timer
 
 from django.contrib.auth.decorators import permission_required
@@ -19,6 +25,8 @@ from django.utils.translation import gettext_lazy as _
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.filters import SearchFilter, OrderingFilter
 from .serializers import ProductSerializer, OrderSerializer
+
+from drf_spectacular.utils import extend_schema, OpenApiResponse
 
 class ShopIndexView(View):
     def get(self, request: HttpRequest) -> HttpResponse:
@@ -119,8 +127,12 @@ class ProductDeleteView(DeleteView):
             kwargs={"pk": self.object.pk},
         )
 
-
+@extend_schema(description='Product views CRUD')
 class ProductViewSet(ModelViewSet):
+    """
+    Набор представлений для действий над Product.
+    Полный CRUD для сущностей товара.
+    """
     queryset = Product.objects.all()
 
     serializer_class = ProductSerializer
@@ -146,6 +158,18 @@ class ProductViewSet(ModelViewSet):
         "price",
         "discount",
     ]
+
+    @extend_schema(
+        summary='Get one product by ID',
+        description='Retrieves **product**, returns 404 if not found',
+        responses={
+            200: ProductSerializer,
+            404: OpenApiResponse(description=
+                                 'Empty response, product by ID not found.'),
+        }
+    )
+    def retrieve(self, *args, **kwargs):
+        return super().retrieve(*args, **kwargs)
 
 
 # Заказы
@@ -235,6 +259,10 @@ class OrdersDataExportView(View):
 
 
 class OrderViewSet(ModelViewSet):
+    """
+    Набор представлений для действий над Order.
+    Полный CRUD для сущностей заказа.
+    """
     queryset = Order.objects.all()
 
     serializer_class = OrderSerializer

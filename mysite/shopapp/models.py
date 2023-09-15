@@ -13,6 +13,12 @@ def product_preview_directly_path(instance: "Product", filename: str) -> str:
 
 
 class Product(models.Model):
+    """
+    Модель Product представляет товар, который можно
+    продавать в Интернет-магазине.
+
+    Заказы тут: :model:`shopapp.Order`
+    """
     class Meta:
         ordering = ['name']
         verbose_name = _("Product")
@@ -43,7 +49,12 @@ class Product(models.Model):
 
 
 class Order(models.Model):
+    """
+    Модель Order представляет заказ, который можно
+    сделать в Интернет-магазине.
 
+    Товары тут: :model:`shopapp.Product`
+    """
     class Meta:
         verbose_name = _("Order")
         verbose_name_plural = _("Orders")
