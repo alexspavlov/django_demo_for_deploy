@@ -1,0 +1,32 @@
+{% extends 'blogapp/base.html' %}
+
+{% load i18n %}
+
+{% block title %} Blog – last posts {% endblock %}
+
+{% block body %}
+<h1>Blog – last posts</h1>
+    {% if articles %}
+
+        <div>
+        {% for article in articles %}
+        	<div>
+                <p>Title: {{ article.title }}</p>
+                <p>Publish date: {{ article.pub_date }}</p>
+                <p>Author: {{ article.author }}</p>
+                <p>Category: {{ article.category }}</p>
+                <p>Tags: {{ article.tags }}</p>
+            </div>
+
+            <div>
+                <p>{{ article.bio }}</p>
+            </div>
+        {% endfor %}
+
+        </div>
+    	{% else %}
+        <h3>{% translate 'No articles yet' %}</h3>
+    {% endif %}
+
+    <br>
+{% endblock %}
