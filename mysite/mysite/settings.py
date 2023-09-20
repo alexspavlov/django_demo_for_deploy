@@ -16,6 +16,9 @@ from django.urls import reverse_lazy
 
 from django.utils.translation import gettext_lazy as _
 
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -29,7 +32,13 @@ SECRET_KEY = 'django-insecure-^-)@@$0ge&-*8^opn=x22n@$x0o_bc18&8$7slw4#f3i+6#awc
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "0.0.0.0",
+    "127.0.0.1",
+]
+INTERNAL_IPS = [
+    '127.0.0.1',
+]
 
 
 # Application definition
@@ -43,6 +52,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.admindocs',
 
+    'debug_toolbar',
     'rest_framework',
     'django_filters',
     'drf_spectacular',
@@ -65,12 +75,14 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.contrib.admindocs.middleware.XViewMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 
     'requestdataapp.middlewares.setup_useragent_on_request_middleware',
     'requestdataapp.middlewares.CountRequestsMiddleware',
 ]
 
 ROOT_URLCONF = 'mysite.urls'
+
 
 TEMPLATES = [
     {
@@ -180,24 +192,63 @@ SPECTACULAR_SETTINGS = {
     'SERVE_INCLUDE_SCHEMA': False,
 }
 
+# LOGGING = {
+#     'version': 1,
+#     'filters': {
+#         'require_debug_true': {
+#             '()': 'django.utils.log.RequireDebugTrue',
+#         },
+#     },
+#     'handlers': {
+#         'console': {
+#             'level': 'DEBUG',
+#             'filters': ['require_debug_true'],
+#             'class': 'logging.StreamHandler',
+#         },
+#     },
+#     'loggers': {
+#         'django.db.backends': {
+#             'level': 'DEBUG',
+#             'handlers': ['console'],
+#         }
+#     }
+# }
+
+LOGFILE_NAME = BASE_DIR / 'log.txt'
+LOGFILE_SIZE = 400
+LOGFILE_COUNT = 3
+
 LOGGING = {
     'version': 1,
-    'filters': {
-        'require_debug_true': {
-            '()': 'django.utils.log.RequireDebugTrue',
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '%(asctime)s [%(levelname)s] %(name)s: %(message)s',
         },
     },
     'handlers': {
         'console': {
-            'level': 'DEBUG',
-            'filters': ['require_debug_true'],
             'class': 'logging.StreamHandler',
+            'formatter': 'verbose',
+        },
+        'logfile': {
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': LOGFILE_NAME,
+            'maxBytes': LOGFILE_SIZE,
+            'backupCount': LOGFILE_COUNT,
+            'formatter': 'verbose',
         },
     },
-    'loggers': {
-        'django.db.backends': {
-            'level': 'DEBUG',
-            'handlers': ['console'],
-        }
+    'root': {
+        'handlers': [
+            'console',
+            'logfile',
+        ],
+        'level': 'DEBUG',
     }
 }
+
+sentry_sdk.init(
+    dsn="https://3b08b61f6bfd6ae64c4aaaacb88f4dd6@o4505914527186944.ingest.sentry.io/4505914532102144",
+    traces_sample_rate=1.0,
+)
