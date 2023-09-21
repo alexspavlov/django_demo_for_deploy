@@ -1,9 +1,13 @@
 from django.contrib import admin
 from django.db.models import QuerySet
-from django.http import HttpRequest
+from django.http import HttpRequest, HttpResponse
+from django.shortcuts import render
+from django.urls import path
 
 from .models import Product, Order
 from .admin_mixins import ExportAsCSVMixin
+
+from .forms import CSVImportForm
 
 
 @admin.action(description='Archive products')
@@ -23,6 +27,26 @@ class OrderInline(admin.TabularInline):
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin, ExportAsCSVMixin):
+    change_list_template = "shopapp/products_changelist.html"
+
+    def import_csv(self, request: HttpRequest) -> HttpResponse:
+        form = CSVImportForm()
+        context = {
+            "form": form,
+        }
+        return render(request, "admin/csv_form.html", context)
+
+    def get_urls(self):
+        urls = super().get_urls()
+        new_urls = [
+            path(
+                "import-products-csv/",
+                self.import_csv,
+                name="import_products_csv",
+            ),
+        ]
+        return new_urls + urls
+
     actions = [
         mark_archived,
         mark_unarchived,
@@ -56,8 +80,8 @@ class ProductAdmin(admin.ModelAdmin, ExportAsCSVMixin):
         else:
             return obj.description[:48] + '...'
 
-
     description_short.short_description = "My Custom Field"
+
 
 # admin.site.register(Product, ProductAdmin)
 
