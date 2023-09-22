@@ -25,6 +25,10 @@ from drf_spectacular.views import (SpectacularAPIView,
                                    SpectacularRedocView,
                                    SpectacularSwaggerView)
 
+from django.contrib.sitemaps.views import sitemap
+
+from .sitemaps import sitemaps
+
 urlpatterns = [
     path('admin/doc/', include('django.contrib.admindocs.urls')),
     path('admin/', admin.site.urls),
@@ -43,6 +47,13 @@ urlpatterns += i18n_patterns(
     path('api/', include('myapiapp.urls')),
 
     path('blog/', include('blogapp.urls')),
+
+    path(
+        'sitemap.xml',
+        sitemap,
+        {'sitemaps': sitemaps},
+        name="django.contrib.sitemaps.views.sitemaps",
+    )
 )
 
 if settings.DEBUG:

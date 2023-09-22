@@ -1,5 +1,7 @@
 from django.db import models
 
+from django.urls import reverse, reverse_lazy
+
 
 class Author(models.Model):
     name = models.CharField(max_length=100),
@@ -21,5 +23,8 @@ class Article(models.Model):
     # author = models.ForeignKey(Author, on_delete=models.CASCADE)
     # category = models.ForeignKey(Category, on_delete=models.CASCADE)
     # tags = models.ManyToManyField(Tag)
+
+    def get_absolute_url(self):
+        return reverse("blogapp:post_details", kwargs={"pk": self.pk})
 
 

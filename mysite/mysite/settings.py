@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.admindocs',
+    'django.contrib.sitemaps',
 
     'debug_toolbar',
     'rest_framework',
@@ -214,41 +215,41 @@ SPECTACULAR_SETTINGS = {
 #     }
 # }
 
-LOGFILE_NAME = BASE_DIR / 'log.txt'
-LOGFILE_SIZE = 400
-LOGFILE_COUNT = 3
+# LOGFILE_NAME = BASE_DIR / 'log.txt'
+# LOGFILE_SIZE = 400
+# LOGFILE_COUNT = 3
 
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'formatters': {
-        'verbose': {
-            'format': '%(asctime)s [%(levelname)s] %(name)s: %(message)s',
-        },
-    },
-    'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
-            'formatter': 'verbose',
-        },
-        'logfile': {
-            'class': 'logging.handlers.RotatingFileHandler',
-            'filename': LOGFILE_NAME,
-            'maxBytes': LOGFILE_SIZE,
-            'backupCount': LOGFILE_COUNT,
-            'formatter': 'verbose',
-        },
-    },
-    'root': {
-        'handlers': [
-            'console',
-            'logfile',
-        ],
-        'level': 'DEBUG',
-    }
-}
+# LOGGING = {
+#     'version': 1,
+#     'disable_existing_loggers': False,
+#     'formatters': {
+#         'verbose': {
+#             'format': '%(asctime)s [%(levelname)s] %(name)s: %(message)s',
+#         },
+#     },
+#     'handlers': {
+#         'console': {
+#             'class': 'logging.StreamHandler',
+#             'formatter': 'verbose',
+#         },
+#         'logfile': {
+#             'class': 'logging.handlers.RotatingFileHandler',
+#             'filename': LOGFILE_NAME,
+#             'maxBytes': LOGFILE_SIZE,
+#             'backupCount': LOGFILE_COUNT,
+#             'formatter': 'verbose',
+#         },
+#     },
+#     'root': {
+#         'handlers': [
+#             'console',
+#             'logfile',
+#         ],
+#         'level': 'DEBUG',
+#     }
+# }
 
-sentry_sdk.init(
-    dsn="https://3b08b61f6bfd6ae64c4aaaacb88f4dd6@o4505914527186944.ingest.sentry.io/4505914532102144",
-    traces_sample_rate=1.0,
-)
+# sentry_sdk.init(
+#     dsn="https://3b08b61f6bfd6ae64c4aaaacb88f4dd6@o4505914527186944.ingest.sentry.io/4505914532102144",
+#     traces_sample_rate=1.0,
+# )

@@ -6,6 +6,8 @@
 import logging
 from timeit import default_timer
 
+from csv import DictWriter
+
 from django.contrib.auth.decorators import permission_required
 from django.http import HttpResponse, HttpRequest, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, redirect
@@ -15,6 +17,7 @@ from django.urls import reverse, reverse_lazy
 from django.views import View
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.request import Request
 
 from myauth.models import Profile
 from .models import Product, Order
@@ -24,11 +27,18 @@ from django.utils.translation import gettext_lazy as _
 
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.filters import SearchFilter, OrderingFilter
+from rest_framework.decorators import action
+from rest_framework.parsers import MultiPartParser
+from rest_framework.response import Response
+
 from .serializers import ProductSerializer, OrderSerializer
+
+from .common import save_csv_products
 
 from drf_spectacular.utils import extend_schema, OpenApiResponse
 
 log = logging.getLogger(__name__)
+
 
 class ShopIndexView(View):
     def get(self, request: HttpRequest) -> HttpResponse:
@@ -79,7 +89,6 @@ class ProductsListView(ListView):
 
 
 class ProductCreateView(CreateView):
-
     permission_required = ["shopapp.add_product"]
 
     model = Product
@@ -131,6 +140,7 @@ class ProductDeleteView(DeleteView):
             kwargs={"pk": self.object.pk},
         )
 
+
 @extend_schema(description='Product views CRUD')
 class ProductViewSet(ModelViewSet):
     """
@@ -175,12 +185,48 @@ class ProductViewSet(ModelViewSet):
     def retrieve(self, *args, **kwargs):
         return super().retrieve(*args, **kwargs)
 
+    @action(methods=["get"], detail=False)
+    def download_csv(self, request: Request):
+        response = HttpResponse(content_type='text/csv')
+        filename = "products-export.csv"
+        response['Content-Disposition'] = f"attachment; filename={filename}"
+        queryset = self.filter_queryset(self.get_queryset())
+        fields = [
+            "name",
+            "description",
+            "price",
+            "discount",
+        ]
+        queryset = queryset.only(*fields)
+        writer = DictWriter(response, fieldnames=fields)
+        writer.writeheader()
+
+        for product in queryset:
+            writer.writerow({
+                field: getattr(product, field)
+                for field in fields
+            })
+
+        return response
+
+    @action(
+        detail=False,
+        methods=["post"],
+        parser_classes=[MultiPartParser],
+    )
+    def upload_csv(self, request: Request):
+        products = save_csv_products(
+            request.FILES["file"].file,
+            encoding=request.encoding,
+        )
+        serializer = self.get_serializer(products, many=True)
+        return Response(serializer.data)
+
 
 # Заказы
 
 
 class OrderDetailsView(PermissionRequiredMixin, DetailView):
-
     model = Order
     permission_required = "shopapp.view_order"
 
