@@ -6,20 +6,20 @@
 
 {% block body %}
 <h1>Blog – last posts</h1>
-    {% if articles %}
+    {% if object_list %}
 
         <div>
         {% for article in articles %}
         	<div>
-                <p>Title: {{ article.title }}</p>
+                <p><a href="{% url 'blogapp:post_details' pk=article.pk %}">{{ article.title }}</a></p>
                 <p>Publish date: {{ article.pub_date }}</p>
-                <p>Author: {{ article.author }}</p>
-                <p>Category: {{ article.category }}</p>
-                <p>Tags: {{ article.tags }}</p>
+{#                <p>Author: {{ article.author }}</p>#}
+{#                <p>Category: {{ article.category }}</p>#}
+{#                <p>Tags: {{ article.tags }}</p>#}
             </div>
 
             <div>
-                <p>{{ article.bio }}</p>
+                <p>{{ article.body }}</p>
             </div>
         {% endfor %}
 

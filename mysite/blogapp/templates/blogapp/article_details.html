@@ -1,0 +1,15 @@
+{% extends 'blogapp/base.html' %}
+
+{% block title %}
+    Article #{{ object.pk }}
+{% endblock %}
+
+{% block body %}
+<div>
+    <h1>Article: {{ article.title }}</h1>
+    <p>Publish date: {{ article.pub_date }}</p>
+    <p>{{ article.body }}</p>
+</div>
+    <p><a href="{% url 'blogapp:posts_list' %}">Back to Blog</a></p>
+{% endblock %}
+
