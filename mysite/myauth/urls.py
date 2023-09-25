@@ -2,7 +2,7 @@ from django.contrib.auth.views import LoginView
 from django.urls import path
 from .views import (
                     # set_cookie_view,
-                    # get_cookie_view,
+                    get_cookie_view,
                     # set_session_view,
                     # get_session_view,
                     MyLogoutView,
@@ -26,7 +26,7 @@ urlpatterns = [
         ),
         name='login'),
 
-    # path("cookie/get/", get_cookie_view, name='cookie-get'),
+    path("cookie/get/", get_cookie_view, name='cookie-get'),
     # path('cookie/set/', set_cookie_view, name='cookie-set'),
     #
     # path("session/set/", set_session_view, name='session-set'),

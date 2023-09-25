@@ -19,6 +19,9 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.request import Request
 
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
+
 from myauth.models import Profile
 from .models import Product, Order
 from .forms import GroupForm
@@ -37,6 +40,8 @@ from .common import save_csv_products
 
 from drf_spectacular.utils import extend_schema, OpenApiResponse
 
+from django.core.cache import cache
+
 log = logging.getLogger(__name__)
 
 
@@ -54,6 +59,7 @@ class ShopIndexView(View):
         }
         log.debug('Products for shop index: %s', products)
         log.info('Rendering shop index')
+        print("shop index context", context)
         return render(request, 'shopapp/shop-index.html', context=context)
 
 
@@ -185,6 +191,12 @@ class ProductViewSet(ModelViewSet):
     def retrieve(self, *args, **kwargs):
         return super().retrieve(*args, **kwargs)
 
+    @method_decorator(cache_page(60 * 2))
+    def list(self, *args, **kwargs):
+        print("Hello products list")
+        return super().list(*args, **kwargs)
+
+
     @action(methods=["get"], detail=False)
     def download_csv(self, request: Request):
         response = HttpResponse(content_type='text/csv')
@@ -279,19 +291,23 @@ class OrderDeleteView(DeleteView):
 
 class ProductsDataExportView(View):
     def get(self, request: HttpRequest) -> JsonResponse:
-        products = Product.objects.order_by("pk").all()
-        products_data = [
-            {
-                "pk": product.pk,
-                "name": product.name,
-                "price": product.price,
-                "archived": product.archived,
-            }
-            for product in products
-        ]
-        elem = products_data[0]
-        name = elem["name"]
-        print("name: ", name)
+        cache_key = "products_data_export"
+        products_data = cache.get(cache_key)
+        if products_data is None:
+            products = Product.objects.order_by("pk").all()
+            products_data = [
+                {
+                    "pk": product.pk,
+                    "name": product.name,
+                    "price": product.price,
+                    "archived": product.archived,
+                }
+                for product in products
+            ]
+        # elem = products_data[0]
+        # name = elem["name"]
+        # print("name: ", name)
+        cache.set(cache_key, products_data, 300)
         return JsonResponse({"products": products_data})
 
 
