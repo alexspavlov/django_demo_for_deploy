@@ -1,0 +1,25 @@
+{% extends 'shopapp/base.html' %}
+{% load cache %}
+
+{% block title %} User Orders list {% endblock %}
+
+{% block body %}
+
+    {% if request.user.is_authenticated %}
+        <h1>{{ owner.username }}'s orders</h1>
+            <div>
+                {% if user_orders %}
+                    {% cache 60 user_orders owner.user_id %}
+                        {% for order in user_orders %}
+                            <p><a href="{% url 'shopapp:order_details' pk=order.pk %}">Order #{{ order.pk }}</a></p>
+                        {% endfor %}
+                    {% endcache %}
+                {% else %}
+                    <p>No user's orders yet</p>
+                {% endif %}
+            </div>
+    {% else %}
+        <p>Sorry, you must <a href="{% url 'myauth:login' %}">login</a> first.</p>
+    {% endif %}
+
+{% endblock %}

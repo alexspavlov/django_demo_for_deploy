@@ -7,6 +7,7 @@ import logging
 from timeit import default_timer
 
 from csv import DictWriter
+from typing import Type
 
 from django.contrib.auth.decorators import permission_required
 from django.http import HttpResponse, HttpRequest, HttpResponseRedirect, JsonResponse
@@ -196,7 +197,6 @@ class ProductViewSet(ModelViewSet):
         print("Hello products list")
         return super().list(*args, **kwargs)
 
-
     @action(methods=["get"], detail=False)
     def download_csv(self, request: Request):
         response = HttpResponse(content_type='text/csv')
@@ -356,3 +356,39 @@ class OrderViewSet(ModelViewSet):
         'promocode',
         'user',
     ]
+
+
+class UserOrderListsView(ListView):
+    template_name = "shopapp/user_orders_list.html"
+    context_object_name = "user_orders"
+    queryset = Order.objects.all()
+
+    def get_queryset(self):
+        self.owner = User.objects.get(pk=self.kwargs['user_id'])
+        return Order.objects.filter(user=self.owner)
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['owner'] = self.owner
+        return context
+
+
+class UserOrdersDataExportView(View):
+
+    def get(self, *args, **kwargs) -> JsonResponse:
+        cache_key = "user_orders"
+        data_json = cache.get(cache_key)
+
+        if data_json is None:
+            user = User.objects.get(pk=self.kwargs['user_id'])
+            orders = Order.objects.order_by('pk').filter(user=user)
+            user_orders = [
+                {
+                    "pk": order.pk,
+                    "delivery_address": order.delivery_address,
+                    "promocode": order.promocode,
+                }
+                for order in orders
+            ]
+            cache.set(cache_key, data_json, 300)
+            return JsonResponse({"orders": user_orders})

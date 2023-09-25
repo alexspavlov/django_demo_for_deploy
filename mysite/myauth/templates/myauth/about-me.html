@@ -19,6 +19,8 @@
         <p>Username: {{ user.username }}</p>
         <p>Bio: <i>{{ user.profile.bio }}</i></p>
         <br>
+        <p><a href="{% url 'shopapp:user-orders-list' request.user.id %}">My orders</a></p>
+        <br>
         <p><a href="{% url 'myauth:update' request.user.id %}">Update profile</a></p>
         <br>
         <p><a href="{% url 'myauth:users-list' %}">Users List</a></p>
