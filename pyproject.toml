@@ -1,20 +1,22 @@
 [tool.poetry]
-name = "python-django"
+name = "django_demo_for_deploy"
 version = "0.1.0"
 description = ""
-authors = ["Алексей Павлов <pavlov.alexy@gmail.com>"]
+authors = ["Alexey Pavlov"]
 
 [tool.poetry.dependencies]
-python = "^3.11"
-django = "^4.2.5"
+python = "^3.10"
+Django = "^4.2.5"
 django-rest-framework = "^0.1.0"
 djangorestframework = "^3.14.0"
 django-filter = "^23.3"
 django-debug-toolbar = "^4.2.0"
-pillow = "^10.0.1"
+Pillow = "^10.0.1"
 gunicorn = "^21.2.0"
+drf-spectacular = "^0.26.5"
 
+[tool.poetry.dev-dependencies]
 
 [build-system]
-requires = ["poetry-core"]
+requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"

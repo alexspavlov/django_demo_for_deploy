@@ -203,12 +203,12 @@ REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 
-SPECTACULAR_SETTINGS = {
-    'TITLE': 'My site project API',
-    'DESCRIPTION': 'My site with shop app and custom auth',
-    'VERSION': '1.0.0',
-    'SERVE_INCLUDE_SCHEMA': False,
-}
+# SPECTACULAR_SETTINGS = {
+#     'TITLE': 'My site project API',
+#     'DESCRIPTION': 'My site with shop app and custom auth',
+#     'VERSION': '1.0.0',
+#     'SERVE_INCLUDE_SCHEMA': False,
+# }
 
 LOGLEVEL = getenv("DJANGO_LOGLEVEL", "info").upper()
 
@@ -236,64 +236,3 @@ logging.config.dictConfig({
     },
     }
 )
-
-# LOGGING = {
-#     'version': 1,
-#     'filters': {
-#         'require_debug_true': {
-#             '()': 'django.utils.log.RequireDebugTrue',
-#         },
-#     },
-#     'handlers': {
-#         'console': {
-#             'level': 'DEBUG',
-#             'filters': ['require_debug_true'],
-#             'class': 'logging.StreamHandler',
-#         },
-#     },
-#     'loggers': {
-#         'django.db.backends': {
-#             'level': 'DEBUG',
-#             'handlers': ['console'],
-#         }
-#     }
-# }
-
-# LOGFILE_NAME = BASE_DIR / 'log.txt'
-# LOGFILE_SIZE = 400
-# LOGFILE_COUNT = 3
-
-# LOGGING = {
-#     'version': 1,
-#     'disable_existing_loggers': False,
-#     'formatters': {
-#         'verbose': {
-#             'format': '%(asctime)s [%(levelname)s] %(name)s: %(message)s',
-#         },
-#     },
-#     'handlers': {
-#         'console': {
-#             'class': 'logging.StreamHandler',
-#             'formatter': 'verbose',
-#         },
-#         'logfile': {
-#             'class': 'logging.handlers.RotatingFileHandler',
-#             'filename': LOGFILE_NAME,
-#             'maxBytes': LOGFILE_SIZE,
-#             'backupCount': LOGFILE_COUNT,
-#             'formatter': 'verbose',
-#         },
-#     },
-#     'root': {
-#         'handlers': [
-#             'console',
-#             'logfile',
-#         ],
-#         'level': 'DEBUG',
-#     }
-# }
-
-# sentry_sdk.init(
-#     dsn="https://3b08b61f6bfd6ae64c4aaaacb88f4dd6@o4505914527186944.ingest.sentry.io/4505914532102144",
-#     traces_sample_rate=1.0,
-# )
